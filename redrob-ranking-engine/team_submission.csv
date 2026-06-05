@@ -1,0 +1,101 @@
+candidate_id,rank,score,reasoning
+CAND_0064326,1,42.3,Search Engineer with 7.6 yrs exp; matched 4 core AI/retrieval skills; 94% recruiter response rate.
+CAND_0053591,2,39.285,AI Engineer with 5.3 yrs exp; matched 4 core AI/retrieval skills; 81% recruiter response rate.
+CAND_0081686,3,39.13,Search Engineer with 6.0 yrs exp; matched 4 core AI/retrieval skills; 91% recruiter response rate.
+CAND_0071974,4,38.76,Senior AI Engineer with 7.8 yrs exp; matched 5 core AI/retrieval skills; 76% recruiter response rate.
+CAND_0041669,5,35.805,Recommendation Systems Engineer with 8.0 yrs exp; matched 4 core AI/retrieval skills; 77% recruiter response rate.
+CAND_0077337,6,34.675,Staff Machine Learning Engineer with 7.0 yrs exp; matched 4 core AI/retrieval skills; 95% recruiter response rate.
+CAND_0011162,7,34.65,Recommendation Systems Engineer with 5.8 yrs exp; matched 6 core AI/retrieval skills; 75% recruiter response rate.
+CAND_0098454,8,33.756,AI Specialist with 6.6 yrs exp; matched 3 core AI/retrieval skills; 87% recruiter response rate.
+CAND_0048534,9,33.6,Computer Vision Engineer with 3.4 yrs exp; matched 5 core AI/retrieval skills; 80% recruiter response rate.
+CAND_0006418,10,32.752,Machine Learning Engineer with 5.7 yrs exp; matched 3 core AI/retrieval skills; 92% recruiter response rate.
+CAND_0002025,11,32.4,Senior AI Engineer with 5.9 yrs exp; matched 4 core AI/retrieval skills; 80% recruiter response rate.
+CAND_0076482,12,32.336,ML Engineer with 6.6 yrs exp; matched 3 core AI/retrieval skills; 86% recruiter response rate.
+CAND_0099806,13,32.3,AI Engineer with 4.6 yrs exp; matched 5 core AI/retrieval skills; 76% recruiter response rate.
+CAND_0070514,14,31.68,AI Specialist with 5.5 yrs exp; matched 3 core AI/retrieval skills; 80% recruiter response rate.
+CAND_0088025,15,31.54,Staff Machine Learning Engineer with 8.6 yrs exp; matched 3 core AI/retrieval skills; 83% recruiter response rate.
+CAND_0052682,16,30.976,NLP Engineer with 6.6 yrs exp; matched 3 core AI/retrieval skills; 88% recruiter response rate.
+CAND_0030031,17,30.456,AI Engineer with 5.7 yrs exp; matched 3 core AI/retrieval skills; 94% recruiter response rate.
+CAND_0018499,18,29.28,Senior Machine Learning Engineer with 7.2 yrs exp; matched 5 core AI/retrieval skills; 61% recruiter response rate.
+CAND_0094056,19,29.192,NLP Engineer with 5.9 yrs exp; matched 3 core AI/retrieval skills; 82% recruiter response rate.
+CAND_0018396,20,29.072,Analytics Engineer with 5.3 yrs exp; matched 3 core AI/retrieval skills; 79% recruiter response rate.
+CAND_0083307,21,29.05,Search Engineer with 7.8 yrs exp; matched 4 core AI/retrieval skills; 70% recruiter response rate.
+CAND_0083790,22,29.05,Data Scientist with 3.5 yrs exp; matched 5 core AI/retrieval skills; 83% recruiter response rate.
+CAND_0037426,23,28.875,Civil Engineer with 7.2 yrs exp; matched 4 core AI/retrieval skills; 75% recruiter response rate.
+CAND_0047521,24,28.552,Junior ML Engineer with 4.4 yrs exp; matched 4 core AI/retrieval skills; 83% recruiter response rate.
+CAND_0081846,25,27.448,Lead AI Engineer with 6.7 yrs exp; matched 3 core AI/retrieval skills; 73% recruiter response rate.
+CAND_0011687,26,27.412,Senior NLP Engineer with 7.8 yrs exp; matched 3 core AI/retrieval skills; 89% recruiter response rate.
+CAND_0085372,27,27.412,Data Analyst with 7.4 yrs exp; matched 3 core AI/retrieval skills; 77% recruiter response rate.
+CAND_0074648,28,27.224,AI Research Engineer with 4.1 yrs exp; matched 4 core AI/retrieval skills; 82% recruiter response rate.
+CAND_0013536,29,27.144,Applied ML Engineer with 14.1 yrs exp; matched 4 core AI/retrieval skills; 87% recruiter response rate.
+CAND_0096916,30,27.056,Software Engineer with 6.3 yrs exp; matched 3 core AI/retrieval skills; 76% recruiter response rate.
+CAND_0007412,31,26.752,Applied ML Engineer with 7.4 yrs exp; matched 3 core AI/retrieval skills; 76% recruiter response rate.
+CAND_0004708,32,26.496,Data Analyst with 6.6 yrs exp; matched 3 core AI/retrieval skills; 69% recruiter response rate.
+CAND_0010257,33,26.496,Senior Data Scientist with 6.5 yrs exp; matched 3 core AI/retrieval skills; 72% recruiter response rate.
+CAND_0077956,34,26.4,Computer Vision Engineer with 6.4 yrs exp; matched 2 core AI/retrieval skills; 88% recruiter response rate.
+CAND_0089381,35,26.244,Computer Vision Engineer with 6.0 yrs exp; matched 3 core AI/retrieval skills; 81% recruiter response rate.
+CAND_0029996,36,26.208,Mechanical Engineer with 8.5 yrs exp; matched 3 core AI/retrieval skills; 78% recruiter response rate.
+CAND_0055992,37,26.208,AI Engineer with 16.9 yrs exp; matched 4 core AI/retrieval skills; 72% recruiter response rate.
+CAND_0062247,38,26.208,AI Engineer with 7.3 yrs exp; matched 3 core AI/retrieval skills; 78% recruiter response rate.
+CAND_0050876,39,25.996,Applied ML Engineer with 6.0 yrs exp; matched 3 core AI/retrieval skills; 67% recruiter response rate.
+CAND_0008486,40,25.665,Software Engineer with 7.9 yrs exp; matched 4 core AI/retrieval skills; 59% recruiter response rate.
+CAND_0010541,41,25.665,AI Research Engineer with 6.2 yrs exp; matched 4 core AI/retrieval skills; 59% recruiter response rate.
+CAND_0090668,42,25.536,Civil Engineer with 7.8 yrs exp; matched 3 core AI/retrieval skills; 76% recruiter response rate.
+CAND_0011383,43,25.53,Mechanical Engineer with 6.6 yrs exp; matched 4 core AI/retrieval skills; 69% recruiter response rate.
+CAND_0074317,44,25.284,AI Research Engineer with 4.2 yrs exp; matched 3 core AI/retrieval skills; 86% recruiter response rate.
+CAND_0012957,45,25.192,Search Engineer with 4.9 yrs exp; matched 4 core AI/retrieval skills; 67% recruiter response rate.
+CAND_0005260,46,25.112,Senior NLP Engineer with 5.2 yrs exp; matched 3 core AI/retrieval skills; 86% recruiter response rate.
+CAND_0098356,47,25.025,Civil Engineer with 5.8 yrs exp; matched 4 core AI/retrieval skills; 65% recruiter response rate.
+CAND_0033991,48,24.928,Mechanical Engineer with 7.5 yrs exp; matched 3 core AI/retrieval skills; 76% recruiter response rate.
+CAND_0073007,49,24.9,AI Specialist with 5.8 yrs exp; matched 3 core AI/retrieval skills; 83% recruiter response rate.
+CAND_0002120,50,24.84,ML Engineer with 6.5 yrs exp; matched 4 core AI/retrieval skills; 72% recruiter response rate.
+CAND_0070525,51,24.831,Senior Software Engineer (ML) with 5.4 yrs exp; matched 2 core AI/retrieval skills; 93% recruiter response rate.
+CAND_0046353,52,24.82,ML Engineer with 6.4 yrs exp; matched 3 core AI/retrieval skills; 73% recruiter response rate.
+CAND_0095213,53,24.79,ML Engineer with 5.1 yrs exp; matched 4 core AI/retrieval skills; 67% recruiter response rate.
+CAND_0091039,54,24.708,AI Specialist with 6.8 yrs exp; matched 3 core AI/retrieval skills; 87% recruiter response rate.
+CAND_0061819,55,24.648,Junior ML Engineer with 5.0 yrs exp; matched 5 core AI/retrieval skills; 79% recruiter response rate.
+CAND_0068351,56,24.51,Lead AI Engineer with 6.4 yrs exp; matched 2 core AI/retrieval skills; 86% recruiter response rate.
+CAND_0040200,57,24.336,AI Research Engineer with 5.5 yrs exp; matched 5 core AI/retrieval skills; 52% recruiter response rate.
+CAND_0055362,58,24.192,Senior Software Engineer (ML) with 3.1 yrs exp; matched 3 core AI/retrieval skills; 84% recruiter response rate.
+CAND_0077988,59,24.192,Mechanical Engineer with 7.8 yrs exp; matched 3 core AI/retrieval skills; 72% recruiter response rate.
+CAND_0008295,60,24.03,AI Research Engineer with 6.5 yrs exp; matched 2 core AI/retrieval skills; 89% recruiter response rate.
+CAND_0016659,61,24.03,ML Engineer with 4.4 yrs exp; matched 3 core AI/retrieval skills; 89% recruiter response rate.
+CAND_0091691,62,23.94,Mechanical Engineer with 5.6 yrs exp; matched 4 core AI/retrieval skills; 76% recruiter response rate.
+CAND_0063736,63,23.904,Data Scientist with 3.7 yrs exp; matched 3 core AI/retrieval skills; 83% recruiter response rate.
+CAND_0039754,64,23.814,Senior Applied Scientist with 16.2 yrs exp; matched 3 core AI/retrieval skills; 81% recruiter response rate.
+CAND_0030784,65,23.76,Data Scientist with 4.4 yrs exp; matched 4 core AI/retrieval skills; 90% recruiter response rate.
+CAND_0069220,66,23.75,ML Engineer with 5.6 yrs exp; matched 4 core AI/retrieval skills; 50% recruiter response rate.
+CAND_0057736,67,23.552,Computer Vision Engineer with 6.2 yrs exp; matched 3 core AI/retrieval skills; 92% recruiter response rate.
+CAND_0036437,68,23.49,Search Engineer with 4.8 yrs exp; matched 3 core AI/retrieval skills; 87% recruiter response rate.
+CAND_0074723,69,23.49,Civil Engineer with 8.0 yrs exp; matched 4 core AI/retrieval skills; 54% recruiter response rate.
+CAND_0082086,70,23.46,Senior Software Engineer (ML) with 6.0 yrs exp; matched 3 core AI/retrieval skills; 85% recruiter response rate.
+CAND_0010179,71,23.124,.NET Developer with 5.9 yrs exp; matched 2 core AI/retrieval skills; 82% recruiter response rate.
+CAND_0014461,72,23.1,Civil Engineer with 6.0 yrs exp; matched 4 core AI/retrieval skills; 70% recruiter response rate.
+CAND_0096142,73,23.1,Applied ML Engineer with 5.0 yrs exp; matched 4 core AI/retrieval skills; 84% recruiter response rate.
+CAND_0094854,74,23.085,Cloud Engineer with 8.5 yrs exp; matched 2 core AI/retrieval skills; 81% recruiter response rate.
+CAND_0015578,75,23.075,AI Engineer with 5.4 yrs exp; matched 4 core AI/retrieval skills; 65% recruiter response rate.
+CAND_0000821,76,23.068,Mechanical Engineer with 6.9 yrs exp; matched 3 core AI/retrieval skills; 73% recruiter response rate.
+CAND_0010204,77,22.932,Backend Engineer with 7.0 yrs exp; matched 3 core AI/retrieval skills; 63% recruiter response rate.
+CAND_0073204,78,22.878,Senior Software Engineer (ML) with 3.4 yrs exp; matched 3 core AI/retrieval skills; 93% recruiter response rate.
+CAND_0039838,79,22.8,Recommendation Systems Engineer with 4.9 yrs exp; matched 3 core AI/retrieval skills; 80% recruiter response rate.
+CAND_0090155,80,22.528,ML Engineer with 5.8 yrs exp; matched 3 core AI/retrieval skills; 64% recruiter response rate.
+CAND_0005147,81,22.42,Mechanical Engineer with 8.5 yrs exp; matched 4 core AI/retrieval skills; 76% recruiter response rate.
+CAND_0036184,82,22.32,Recommendation Systems Engineer with 6.0 yrs exp; matched 3 core AI/retrieval skills; 90% recruiter response rate.
+CAND_0098695,83,22.278,Cloud Engineer with 5.7 yrs exp; matched 2 core AI/retrieval skills; 79% recruiter response rate.
+CAND_0037160,84,22.2,Data Scientist with 6.0 yrs exp; matched 2 core AI/retrieval skills; 74% recruiter response rate.
+CAND_0072688,85,22.185,Data Scientist with 6.9 yrs exp; matched 2 core AI/retrieval skills; 87% recruiter response rate.
+CAND_0048375,86,22.161,Computer Vision Engineer with 4.4 yrs exp; matched 3 core AI/retrieval skills; 83% recruiter response rate.
+CAND_0033713,87,22.08,Software Engineer with 6.9 yrs exp; matched 3 core AI/retrieval skills; 69% recruiter response rate.
+CAND_0015582,88,21.976,ML Engineer with 4.4 yrs exp; matched 4 core AI/retrieval skills; 82% recruiter response rate.
+CAND_0044262,89,21.9,Data Scientist with 6.9 yrs exp; matched 2 core AI/retrieval skills; 73% recruiter response rate.
+CAND_0000031,90,21.84,Recommendation Systems Engineer with 6.0 yrs exp; matched 3 core AI/retrieval skills; 91% recruiter response rate.
+CAND_0074225,91,21.84,Machine Learning Engineer with 4.3 yrs exp; matched 3 core AI/retrieval skills; 91% recruiter response rate.
+CAND_0069905,92,21.762,Applied ML Engineer with 6.6 yrs exp; matched 2 core AI/retrieval skills; 78% recruiter response rate.
+CAND_0007052,93,21.76,ML Engineer with 6.5 yrs exp; matched 3 core AI/retrieval skills; 85% recruiter response rate.
+CAND_0017590,94,21.728,AI Research Engineer with 5.1 yrs exp; matched 3 core AI/retrieval skills; 56% recruiter response rate.
+CAND_0037029,95,21.627,Software Engineer with 6.9 yrs exp; matched 2 core AI/retrieval skills; 81% recruiter response rate.
+CAND_0003625,96,21.584,Civil Engineer with 7.0 yrs exp; matched 3 core AI/retrieval skills; 71% recruiter response rate.
+CAND_0007009,97,21.576,Recommendation Systems Engineer with 7.9 yrs exp; matched 3 core AI/retrieval skills; 62% recruiter response rate.
+CAND_0018722,98,21.567,Recommendation Systems Engineer with 6.6 yrs exp; matched 2 core AI/retrieval skills; 79% recruiter response rate.
+CAND_0031982,99,21.567,Computer Vision Engineer with 3.7 yrs exp; matched 3 core AI/retrieval skills; 79% recruiter response rate.
+CAND_0015823,100,21.56,Civil Engineer with 6.6 yrs exp; matched 3 core AI/retrieval skills; 70% recruiter response rate.
