@@ -19,7 +19,7 @@ _A glimpse into the Redrob "Midnight Glass" interface:_
   <table>
     <tr>
       <td align="center"><img src="assets/dashboard.png" width="300"><br>Dashboard View</td>
-      <td align="center"><img src="assets/selection.png" width="300"><br>Candidate Filtering</td>
+      <td align="center"><img src="assets/Selection.png" width="300"><br>Candidate Filtering</td>
       <td align="center"><img src="assets/profile-detail.png" width="300"><br>Deep Analytics</td>
     </tr>
     <tr>
