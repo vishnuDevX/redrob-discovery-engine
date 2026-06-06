@@ -3,6 +3,6 @@ team_members:
   - name: 'Vishnu Sharma'
     email: 'study05vishnu@gmail.com'
 github_repo_url: 'https://github.com/vishnuDevX/redrob-discovery-engine'
-live_sandbox_url: 'PENDING_VERCEL_LINK'
+live_sandbox_url: 'redrob-discovery-engine.vercel.app'
 ai_tools_used: 'Gemini 1.5 Pro (Architecture, UI Generation, Scoring Logic)'
 core_stack: 'Python, FastAPI, React, Tailwind CSS, TypeScript'
