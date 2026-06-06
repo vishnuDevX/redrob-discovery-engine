@@ -5,6 +5,8 @@ interface CandidateListItem {
   rank: number;
   score: number;
   reasoning: string;
+  recruiter_response_rate?: number | string;
+  response_rate?: number | string;
 }
 
 interface Skill {
@@ -13,7 +15,7 @@ interface Skill {
 }
 
 interface DeepProfile {
-  profile: {
+  profile?: {
     anonymized_name: string;
     headline: string;
     current_company: string;
@@ -21,12 +23,62 @@ interface DeepProfile {
     years_of_experience: number;
     summary: string;
   };
-  skills: Skill[];
-  redrob_signals: {
+  skills?: Skill[];
+  Kinetiq_signals?: {
     recruiter_response_rate: number;
     last_active_date: string;
     connection_count: number;
   };
+  recruiter_response_rate?: number | string;
+  last_active?: string;
+  platform_connections?: number | string;
+  redrob_signals?: {
+    recruiter_response_rate?: number | string;
+    last_active?: string;
+    platform_connections?: number | string;
+  };
+}
+
+function AnalyticsComponent({ candidate }: { candidate: CandidateListItem }) {
+  console.log("Debugging Candidate Data:", candidate);
+  return (
+    <div className="p-6 bg-slate-900/80 rounded-b-lg border-x border-b border-slate-700 text-white animate-fade-in -mt-2 mb-4">
+      <h4 className="text-lg font-semibold text-indigo-300 mb-4">Deep Profile Analytics for {candidate.candidate_id}</h4>
+      
+      <div className="grid grid-cols-3 gap-6">
+        {/* Stat 1 */}
+        <div className="bg-slate-800 p-4 rounded-lg">
+          <p className="text-sm text-slate-400 mb-1">Job Description Match</p>
+          <div className="flex items-center gap-2">
+            <div className="w-full bg-slate-700 h-2 rounded-full">
+              <div className="bg-indigo-500 h-2 rounded-full w-[92%]"></div>
+            </div>
+            <span className="text-sm text-indigo-300 font-mono">92%</span>
+          </div>
+          <p className="text-xs text-slate-500 mt-2">Strong alignment in core tech stack.</p>
+        </div>
+
+        {/* Stat 2 */}
+        <div className="bg-slate-800 p-4 rounded-lg">
+          <p className="text-sm text-slate-400 mb-1">Platform Connectivity</p>
+          <div className="flex items-center gap-2">
+            <div className="w-full bg-slate-700 h-2 rounded-full">
+              <div className="bg-sky-500 h-2 rounded-full w-[85%]"></div>
+            </div>
+            <span className="text-sm text-sky-300 font-mono">85%</span>
+          </div>
+          <p className="text-xs text-slate-500 mt-2">High likelihood of responding to outreach.</p>
+        </div>
+
+        {/* Stat 3 */}
+        <div className="bg-slate-800 p-4 rounded-lg">
+          <p className="text-sm text-slate-400 mb-1">Vector Similarity Engine</p>
+          <p className="text-emerald-400 text-sm font-mono mt-1">Status: High Confidence</p>
+          <p className="text-xs text-slate-400 mt-2">{candidate.reasoning || 'Candidate perfectly matches the seniority and domain requirements.'}</p>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default function App() {
@@ -124,7 +176,7 @@ export default function App() {
     const a = document.createElement('a');
     a.hidden = true;
     a.setAttribute('href', url);
-    a.setAttribute('download', 'redrob_top_candidates.csv');
+    a.setAttribute('download', 'Kinetiq_top_candidates.csv');
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -173,7 +225,7 @@ export default function App() {
                 <span className="text-sm font-semibold tracking-widest text-blue-400 uppercase">Live Pipeline</span>
               </div>
               <h1 className="text-5xl font-extrabold tracking-tight text-white mb-3">
-                Redrob <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">Discovery Engine</span>
+                Kinetiq <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">Discovery Engine</span>
               </h1>
             </div>
             
@@ -229,8 +281,10 @@ export default function App() {
             </div>
 
             {/* The Paginated List */}
-            {currentCandidates.map((candidate) => (
-              <div key={candidate.candidate_id} className="mb-2 relative z-10">
+            {currentCandidates.map((candidate) => {
+              console.log("Current Candidate being rendered:", candidate);
+              return (
+                <div key={candidate.candidate_id} className="mb-2 relative z-10">
                 {/* The Main Row */}
                 <div className="grid grid-cols-[40px_2fr_1fr_1fr_80px_100px] gap-4 px-6 py-4 bg-slate-800/40 hover:bg-slate-800 transition items-center rounded-lg border border-slate-700/50">
                   
@@ -279,10 +333,10 @@ export default function App() {
                   <div className="text-sm text-slate-300">Remote</div>
 
                   {/* 4. Response Rate */}
-                  <div className="text-sm text-emerald-400">High</div>
+                  <div className="text-sm text-emerald-400">{candidate?.recruiter_response_rate || candidate?.response_rate || 'N/A'}</div>
 
                   {/* 5. Score (Fixed Overlap) */}
-                  <div className="text-indigo-400 font-mono text-lg font-bold">{(candidate.score * 100).toFixed(1)}%</div>
+                  <div className="text-indigo-400 font-mono text-lg font-bold">{candidate?.score != null ? (candidate.score * 100).toFixed(1) + '%' : 'N/A'}</div>
 
                   {/* 6. Expand Analytics Button */}
                   <div>
@@ -297,45 +351,11 @@ export default function App() {
 
                 {/* The Individual Analytics Dropdown (Shows only when clicked) */}
                 {expandedCandidate === candidate.candidate_id && (
-                  <div className="p-6 bg-slate-900/80 rounded-b-lg border-x border-b border-slate-700 text-white animate-fade-in -mt-2 mb-4">
-                    <h4 className="text-lg font-semibold text-indigo-300 mb-4">Deep Profile Analytics for {candidate.candidate_id}</h4>
-                    
-                    <div className="grid grid-cols-3 gap-6">
-                      {/* Stat 1 */}
-                      <div className="bg-slate-800 p-4 rounded-lg">
-                        <p className="text-sm text-slate-400 mb-1">Job Description Match</p>
-                        <div className="flex items-center gap-2">
-                          <div className="w-full bg-slate-700 h-2 rounded-full">
-                            <div className="bg-indigo-500 h-2 rounded-full w-[92%]"></div>
-                          </div>
-                          <span className="text-sm text-indigo-300 font-mono">92%</span>
-                        </div>
-                        <p className="text-xs text-slate-500 mt-2">Strong alignment in core tech stack.</p>
-                      </div>
-
-                      {/* Stat 2 */}
-                      <div className="bg-slate-800 p-4 rounded-lg">
-                        <p className="text-sm text-slate-400 mb-1">Platform Connectivity</p>
-                        <div className="flex items-center gap-2">
-                          <div className="w-full bg-slate-700 h-2 rounded-full">
-                            <div className="bg-sky-500 h-2 rounded-full w-[85%]"></div>
-                          </div>
-                          <span className="text-sm text-sky-300 font-mono">85%</span>
-                        </div>
-                        <p className="text-xs text-slate-500 mt-2">High likelihood of responding to outreach.</p>
-                      </div>
-
-                      {/* Stat 3 */}
-                      <div className="bg-slate-800 p-4 rounded-lg">
-                        <p className="text-sm text-slate-400 mb-1">Vector Similarity Engine</p>
-                        <p className="text-emerald-400 text-sm font-mono mt-1">Status: High Confidence</p>
-                        <p className="text-xs text-slate-400 mt-2">{candidate.reasoning || 'Candidate perfectly matches the seniority and domain requirements.'}</p>
-                      </div>
-                    </div>
-                  </div>
+                  <AnalyticsComponent candidate={candidate} />
                 )}
               </div>
-            ))}
+              );
+            })}
 
             {/* Pagination Controls */}
             {totalPages > 1 && (
@@ -394,13 +414,13 @@ export default function App() {
             {/* Identity Card */}
             <div className="backdrop-blur-xl bg-slate-900/60 rounded-3xl border border-blue-500/30 p-8 mb-6 shadow-[0_0_40px_rgba(59,130,246,0.1)] relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 blur-[80px] rounded-full"></div>
-              <h2 className="text-4xl font-black text-white mb-2 relative z-10">{activeCandidate.profile.anonymized_name}</h2>
-              <h3 className="text-xl text-blue-400 font-medium mb-6 relative z-10">{activeCandidate.profile.headline}</h3>
+              <h2 className="text-4xl font-black text-white mb-2 relative z-10">{activeCandidate.profile?.anonymized_name || 'Unknown Candidate'}</h2>
+              <h3 className="text-xl text-blue-400 font-medium mb-6 relative z-10">{activeCandidate.profile?.headline || 'No Headline Provided'}</h3>
               
               <div className="flex gap-4 relative z-10">
-                <span className="bg-slate-800/80 px-4 py-2 rounded-lg text-sm font-medium border border-slate-700">🏢 {activeCandidate.profile.current_company}</span>
-                <span className="bg-slate-800/80 px-4 py-2 rounded-lg text-sm font-medium border border-slate-700">📍 {activeCandidate.profile.location}</span>
-                <span className="bg-slate-800/80 px-4 py-2 rounded-lg text-sm font-medium border border-slate-700">⏳ {activeCandidate.profile.years_of_experience} YOE</span>
+                <span className="bg-slate-800/80 px-4 py-2 rounded-lg text-sm font-medium border border-slate-700">🏢 {activeCandidate.profile?.current_company || 'N/A'}</span>
+                <span className="bg-slate-800/80 px-4 py-2 rounded-lg text-sm font-medium border border-slate-700">📍 {activeCandidate.profile?.location || 'N/A'}</span>
+                <span className="bg-slate-800/80 px-4 py-2 rounded-lg text-sm font-medium border border-slate-700">⏳ {activeCandidate.profile?.years_of_experience ?? 0} YOE</span>
               </div>
             </div>
 
@@ -410,14 +430,14 @@ export default function App() {
               <div className="lg:col-span-2 space-y-6">
                 <div className="backdrop-blur-xl bg-slate-900/40 rounded-2xl border border-slate-700/50 p-8">
                   <h4 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Professional Summary</h4>
-                  <p className="text-slate-300 leading-relaxed text-lg">{activeCandidate.profile.summary}</p>
+                  <p className="text-slate-300 leading-relaxed text-lg">{activeCandidate.profile?.summary || 'No summary available.'}</p>
                 </div>
 
                 <div className="backdrop-blur-xl bg-slate-900/40 rounded-2xl border border-slate-700/50 p-8">
                   <h4 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6">Verified Technical Skills</h4>
                   <div className="flex flex-wrap gap-3">
                     {/* Fix 4: Use unique property instead of array index for key */}
-                    {activeCandidate.skills.map((skill) => (
+                    {activeCandidate.skills?.map((skill) => (
                       <span key={skill.name} className="px-4 py-2 rounded-lg bg-blue-900/20 text-blue-300 border border-blue-500/20 text-sm font-semibold">
                         {skill.name} <span className="opacity-50 ml-1 font-normal text-xs uppercase">{skill.proficiency}</span>
                       </span>
@@ -428,27 +448,23 @@ export default function App() {
 
               {/* Right Column: Behavioral Signals */}
               <div className="space-y-6">
-                <div className="backdrop-blur-xl bg-slate-900/40 rounded-2xl border border-indigo-500/20 p-8">
-                  <h4 className="text-sm font-bold text-indigo-400 uppercase tracking-widest mb-6">Behavioral Intel</h4>
+                <div className="bg-slate-900 p-6 rounded-lg border border-slate-700">
+                  <h3 className="text-slate-400 font-semibold mb-4 text-sm uppercase tracking-wider">Behavioral Intel</h3>
                   
-                  <div className="space-y-5">
-                    <div className="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
-                      <div className="text-xs text-slate-400 mb-1 uppercase tracking-wider">Recruiter Response Rate</div>
-                      <div className="text-2xl font-bold text-white">
-                        {activeCandidate.redrob_signals.recruiter_response_rate !== -1 
-                          ? `${Math.round(activeCandidate.redrob_signals.recruiter_response_rate * 100)}%` 
-                          : 'No Data'}
-                      </div>
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-xs text-slate-500 uppercase">Recruiter Response Rate</p>
+                      <p className="text-white font-medium">{activeCandidate.redrob_signals?.recruiter_response_rate || 'No Data'}</p>
                     </div>
 
-                    <div className="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
-                      <div className="text-xs text-slate-400 mb-1 uppercase tracking-wider">Last Active</div>
-                      <div className="text-lg font-bold text-white">{activeCandidate.redrob_signals.last_active_date}</div>
+                    <div>
+                      <p className="text-xs text-slate-500 uppercase">Last Active</p>
+                      <p className="text-white font-medium">{activeCandidate.redrob_signals?.last_active || 'N/A'}</p>
                     </div>
 
-                    <div className="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
-                      <div className="text-xs text-slate-400 mb-1 uppercase tracking-wider">Platform Connections</div>
-                      <div className="text-2xl font-bold text-white">{activeCandidate.redrob_signals.connection_count}</div>
+                    <div>
+                      <p className="text-xs text-slate-500 uppercase">Platform Connections</p>
+                      <p className="text-white font-medium">{activeCandidate.redrob_signals?.platform_connections || 'N/A'}</p>
                     </div>
                   </div>
                 </div>
@@ -483,16 +499,16 @@ export default function App() {
                   return (
                     <div key={id} className="bg-slate-800/50 p-6 rounded-2xl border border-slate-700/50">
                       <div className="flex items-center gap-3 mb-4">
-                        <div className="bg-slate-700 text-white px-3 py-1 rounded-md text-sm font-bold">Rank #{cand.rank}</div>
-                        <h3 className="text-xl font-bold text-white font-mono">{cand.candidate_id}</h3>
+                        <div className="bg-slate-700 text-white px-3 py-1 rounded-md text-sm font-bold">Rank #{cand?.rank ?? 'N/A'}</div>
+                        <h3 className="text-xl font-bold text-white font-mono">{cand?.candidate_id || 'Unknown ID'}</h3>
                       </div>
                       <div className="mb-6 bg-slate-900/50 rounded-xl p-4 border border-slate-700/30">
                         <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-1">Match Score</span>
-                        <span className="text-4xl font-black text-blue-400">{(cand.score * 100).toFixed(1)}%</span>
+                        <span className="text-4xl font-black text-blue-400">{cand?.score != null ? (cand.score * 100).toFixed(1) + '%' : 'N/A'}</span>
                       </div>
                       <div>
                         <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">Automated Reasoning</span>
-                        <p className="text-sm text-slate-300 leading-relaxed">{cand.reasoning}</p>
+                        <p className="text-sm text-slate-300 leading-relaxed">{cand?.reasoning || 'No reasoning available.'}</p>
                       </div>
                     </div>
                   );
