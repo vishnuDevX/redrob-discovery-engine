@@ -61,4 +61,4 @@ We designed a highly optimized, single-pass filtering pipeline:
 
 ## 🚀 Live Demo
 
-- [Launch the Sandbox](kinetiq-discovery-engine.vercel.app)
+- [Launch the Sandbox](https://kinetiq-engine.vercel.app/)
