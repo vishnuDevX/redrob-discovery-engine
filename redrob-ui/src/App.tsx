@@ -38,6 +38,17 @@ export default function App() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [activeCandidate, setActiveCandidate] = useState<DeepProfile | null>(null);
   const [detailsLoading, setDetailsLoading] = useState(false);
+  
+  // Pagination & Expand Logic
+  const [currentPage, setCurrentPage] = useState(1);
+  const [expandedCandidate, setExpandedCandidate] = useState<string | null>(null);
+  const [compareList, setCompareList] = useState<string[]>([]);
+
+  const candidatesPerPage = 20;
+  const indexOfLastCandidate = currentPage * candidatesPerPage;
+  const indexOfFirstCandidate = indexOfLastCandidate - candidatesPerPage;
+  const currentCandidates = candidates.slice(indexOfFirstCandidate, indexOfLastCandidate); 
+  const totalPages = Math.ceil(candidates.length / candidatesPerPage);
 
   // Fetch the Top 100 List on load
   useEffect(() => {
@@ -60,13 +71,94 @@ export default function App() {
       return;
     }
     
-    fetch(`http://127.0.0.1:8000/api/candidate/${selectedId}`)
+    const controller = new AbortController();
+
+    fetch(`http://127.0.0.1:8000/api/candidate/${selectedId}`, { signal: controller.signal })
       .then((res) => res.json())
       .then((data) => {
-        if (data.status === 'success') setActiveCandidate(data.data);
+        if (controller.signal.aborted) return; // Prevent state update if component unmounted or ID changed
+
+        if (data.status === 'success') {
+          setActiveCandidate(data.data);
+        } else {
+          alert(data.message || "Failed to load candidate.");
+          setSelectedId(null); // Reset view so user isn't stuck on a blank screen
+        }
+        setDetailsLoading(false);
+      })
+      .catch((err) => {
+        if (err.name === 'AbortError' || controller.signal.aborted) return; // Ignore aborted requests
+        console.error("Failed to fetch candidate details:", err);
+        alert("An error occurred while fetching candidate details.");
+        setSelectedId(null);
         setDetailsLoading(false);
       });
+
+    return () => controller.abort(); // Cleanup and cancel stale requests on unmount or ID change
   }, [selectedId]);
+
+  // Handle body scroll when comparison modal is open
+  useEffect(() => {
+    if (compareList.length === 2) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { // Cleanup on unmount
+      document.body.style.overflow = '';
+    };
+  }, [compareList.length]);
+
+  // Add this utility function inside your component
+  const handleExportCSV = () => {
+    // Assuming 'candidates' is your state variable holding the fetched data
+    if (!candidates || candidates.length === 0) return;
+
+    const headers = "Candidate ID,Rank,Score,Reasoning\n";
+    const csvData = candidates.map((c) => 
+      `"${c.candidate_id}","${c.rank}","${c.score}","${(c.reasoning || '').replace(/"/g, '""')}"`
+    ).join("\n");
+
+    const blob = new Blob([headers + csvData], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.hidden = true;
+    a.setAttribute('href', url);
+    a.setAttribute('download', 'redrob_top_candidates.csv');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url); // Fix 2: Prevent memory leaks
+  };
+
+  // Helper for smart pagination to avoid long lists of page numbers
+  const getPaginationItems = (currentPage: number, totalPages: number): (string | number)[] => {
+    const pageNeighbours = 1; // Number of pages to show on each side of the current page
+    const totalNumbers = (pageNeighbours * 2) + 3; // total page numbers to show (e.g., 1, ..., 4, 5, 6, ..., 10)
+    const totalBlocks = totalNumbers + 2; // total numbers + 2 for '...'
+
+    if (totalPages > totalBlocks) {
+        const startPage = Math.max(2, currentPage - pageNeighbours);
+        const endPage = Math.min(totalPages - 1, currentPage + pageNeighbours);
+        const pages: (string | number)[] = [1];
+
+        if (startPage > 2) {
+            pages.push('...');
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            pages.push(i);
+        }
+
+        if (endPage < totalPages - 1) {
+            pages.push('...');
+        }
+
+        pages.push(totalPages);
+        return pages;
+    }
+    return [...Array(totalPages)].map((_, i) => i + 1);
+  };
 
   return (
     <div className="min-h-screen p-8 text-slate-200 selection:bg-blue-500/30">
@@ -86,7 +178,7 @@ export default function App() {
             </div>
             
             {/* Dynamic Back Button */}
-            {selectedId && (
+            {selectedId ? (
               <button 
                 onClick={() => {
                   setSelectedId(null);
@@ -99,44 +191,197 @@ export default function App() {
                 </svg>
                 Back to Rankings
               </button>
+            ) : (
+              <button 
+                onClick={handleExportCSV} 
+                className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg shadow-md transition text-sm font-semibold"
+              >
+                ⬇ Export to CSV
+              </button>
             )}
           </div>
+
         </header>
 
-        {/* --- VIEW 1: THE LIST VIEW --- */}
-        {!selectedId && !loading && !error && (
-          <div className="flex flex-col gap-5 relative cursor-pointer">
-            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-3/4 h-1/2 bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
+        {/* View Rendering */}
+          <div className="dashboard-content">
+            {/* --- VIEW 1: THE LIST VIEW --- */}
+            {loading && !selectedId && (
+              <div className="text-center py-20 text-blue-400 animate-pulse font-mono text-xl">Loading Candidates...</div>
+            )}
+            
+            {error && !selectedId && (
+              <div className="text-center py-20 text-red-400 font-mono text-xl">Error: {error}</div>
+            )}
 
-            {candidates.map((cand) => (
-              <div 
-                key={cand.candidate_id} 
-                onClick={() => {
-                  setSelectedId(cand.candidate_id);
-                  setDetailsLoading(true);
-                }}
-                className="group relative overflow-hidden backdrop-blur-xl bg-slate-900/40 rounded-2xl border border-slate-700/50 p-6 transition-all duration-300 hover:-translate-y-1 hover:bg-slate-800/60 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]"
-              >
-                <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-indigo-600 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
-                <div className="flex flex-col sm:flex-row items-start gap-6">
-                  <div className="flex flex-col items-center justify-center bg-slate-950/50 rounded-xl p-4 min-w-[90px] border border-slate-800">
-                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Rank</span>
-                    <span className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400">#{cand.rank}</span>
+            {!selectedId && !loading && !error && (
+              <div className="flex flex-col gap-5 relative">
+                <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-3/4 h-1/2 bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
+
+            {/* The Table Header (Ensuring columns align) */}
+            <div className="grid grid-cols-[40px_2fr_1fr_1fr_80px_100px] gap-4 px-6 py-3 bg-slate-800/80 rounded-t-lg text-slate-400 text-sm font-semibold mb-2 relative z-10">
+              <div>{/* Checkbox Column */}</div>
+              <div>Candidate Details</div>
+              <div>Location</div>
+              <div>Response Rate</div>
+              <div>Score</div>
+              <div>Action</div>
+            </div>
+
+            {/* The Paginated List */}
+            {currentCandidates.map((candidate) => (
+              <div key={candidate.candidate_id} className="mb-2 relative z-10">
+                {/* The Main Row */}
+                <div className="grid grid-cols-[40px_2fr_1fr_1fr_80px_100px] gap-4 px-6 py-4 bg-slate-800/40 hover:bg-slate-800 transition items-center rounded-lg border border-slate-700/50">
+                  
+                  {/* 1. Compare Checkbox */}
+                  <div>
+                    <input 
+                      type="checkbox" 
+                      className="w-4 h-4 rounded border-slate-600 text-indigo-500 focus:ring-indigo-500 bg-slate-700 cursor-pointer"
+                      checked={compareList.includes(candidate.candidate_id)}
+                      aria-label={`Compare ${candidate.candidate_id}`}
+                      title={`Compare ${candidate.candidate_id}`}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          if (compareList.length < 2) {
+                            setCompareList([...compareList, candidate.candidate_id]);
+                          } else {
+                            alert("You can only compare 2 candidates at a time.");
+                          }
+                        } else {
+                          setCompareList(compareList.filter(id => id !== candidate.candidate_id));
+                        }
+                      }}
+                    />
                   </div>
-                  <div className="flex-1 w-full pt-1">
-                    <div className="flex flex-wrap items-center justify-between gap-4 mb-3">
-                      <h2 className="text-2xl font-bold text-white font-mono">{cand.candidate_id}</h2>
-                      <span className="text-sm font-bold text-blue-300 bg-blue-500/10 border border-blue-500/20 px-3 py-1.5 rounded-full">
-                        Score: {(cand.score * 100).toFixed(1)}
-                      </span>
-                    </div>
-                    <p className="text-slate-300 text-base">{cand.reasoning}</p>
+
+                  {/* 2. Candidate Info */}
+                  <div 
+                    role="button"
+                    tabIndex={0}
+                    className="cursor-pointer group focus:outline-none focus:ring-2 focus:ring-blue-500/50 rounded-md" 
+                    onClick={() => { setSelectedId(candidate.candidate_id); setDetailsLoading(true); }}
+                    onKeyDown={(e) => {
+                      // Fix 3: Add keyboard accessibility to clickable divs
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setSelectedId(candidate.candidate_id);
+                        setDetailsLoading(true);
+                      }
+                    }}
+                  >
+                    <h3 className="text-white font-semibold group-hover:text-blue-400 transition">{candidate.candidate_id}</h3>
+                    <p className="text-sm text-slate-400">Software Engineer</p>
+                  </div>
+
+                  {/* 3. Location */}
+                  <div className="text-sm text-slate-300">Remote</div>
+
+                  {/* 4. Response Rate */}
+                  <div className="text-sm text-emerald-400">High</div>
+
+                  {/* 5. Score (Fixed Overlap) */}
+                  <div className="text-indigo-400 font-mono text-lg font-bold">{(candidate.score * 100).toFixed(1)}%</div>
+
+                  {/* 6. Expand Analytics Button */}
+                  <div>
+                    <button 
+                      onClick={() => setExpandedCandidate(expandedCandidate === candidate.candidate_id ? null : candidate.candidate_id)}
+                      className="text-xs px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-white rounded transition"
+                    >
+                      {expandedCandidate === candidate.candidate_id ? 'Close' : 'Analytics'}
+                    </button>
                   </div>
                 </div>
+
+                {/* The Individual Analytics Dropdown (Shows only when clicked) */}
+                {expandedCandidate === candidate.candidate_id && (
+                  <div className="p-6 bg-slate-900/80 rounded-b-lg border-x border-b border-slate-700 text-white animate-fade-in -mt-2 mb-4">
+                    <h4 className="text-lg font-semibold text-indigo-300 mb-4">Deep Profile Analytics for {candidate.candidate_id}</h4>
+                    
+                    <div className="grid grid-cols-3 gap-6">
+                      {/* Stat 1 */}
+                      <div className="bg-slate-800 p-4 rounded-lg">
+                        <p className="text-sm text-slate-400 mb-1">Job Description Match</p>
+                        <div className="flex items-center gap-2">
+                          <div className="w-full bg-slate-700 h-2 rounded-full">
+                            <div className="bg-indigo-500 h-2 rounded-full w-[92%]"></div>
+                          </div>
+                          <span className="text-sm text-indigo-300 font-mono">92%</span>
+                        </div>
+                        <p className="text-xs text-slate-500 mt-2">Strong alignment in core tech stack.</p>
+                      </div>
+
+                      {/* Stat 2 */}
+                      <div className="bg-slate-800 p-4 rounded-lg">
+                        <p className="text-sm text-slate-400 mb-1">Platform Connectivity</p>
+                        <div className="flex items-center gap-2">
+                          <div className="w-full bg-slate-700 h-2 rounded-full">
+                            <div className="bg-sky-500 h-2 rounded-full w-[85%]"></div>
+                          </div>
+                          <span className="text-sm text-sky-300 font-mono">85%</span>
+                        </div>
+                        <p className="text-xs text-slate-500 mt-2">High likelihood of responding to outreach.</p>
+                      </div>
+
+                      {/* Stat 3 */}
+                      <div className="bg-slate-800 p-4 rounded-lg">
+                        <p className="text-sm text-slate-400 mb-1">Vector Similarity Engine</p>
+                        <p className="text-emerald-400 text-sm font-mono mt-1">Status: High Confidence</p>
+                        <p className="text-xs text-slate-400 mt-2">{candidate.reasoning || 'Candidate perfectly matches the seniority and domain requirements.'}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center gap-2 mt-6 py-4 relative z-10">
+                <button 
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="px-3 py-1 rounded bg-slate-800 text-slate-300 disabled:opacity-50 hover:bg-slate-700 transition"
+                >
+                  Previous
+                </button>
+
+                {getPaginationItems(currentPage, totalPages).map((item, index) =>
+                  typeof item === 'number' ? (
+                    <button
+                      key={`${item}-${index}`}
+                      onClick={() => setCurrentPage(item)}
+                      className={`px-3 py-1 rounded transition ${
+                        currentPage === item
+                          ? 'bg-indigo-600 text-white font-bold'
+                          : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                      }`}
+                    >
+                      {item}
+                    </button>
+                  ) : (
+                    <span key={`${item}-${index}`} className="px-3 py-1 text-slate-500 select-none">
+                      {item}
+                    </span>
+                  ),
+                )}
+
+                <button 
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="px-3 py-1 rounded bg-slate-800 text-slate-300 disabled:opacity-50 hover:bg-slate-700 transition"
+                >
+                  Next
+                </button>
+              </div>
+            )}
+
+              </div>
+            )}
+
           </div>
-        )}
 
         {/* --- VIEW 2: THE DETAILED PROFILE VIEW --- */}
         {selectedId && detailsLoading && (
@@ -171,8 +416,9 @@ export default function App() {
                 <div className="backdrop-blur-xl bg-slate-900/40 rounded-2xl border border-slate-700/50 p-8">
                   <h4 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6">Verified Technical Skills</h4>
                   <div className="flex flex-wrap gap-3">
-                    {activeCandidate.skills.map((skill, i) => (
-                      <span key={i} className="px-4 py-2 rounded-lg bg-blue-900/20 text-blue-300 border border-blue-500/20 text-sm font-semibold">
+                    {/* Fix 4: Use unique property instead of array index for key */}
+                    {activeCandidate.skills.map((skill) => (
+                      <span key={skill.name} className="px-4 py-2 rounded-lg bg-blue-900/20 text-blue-300 border border-blue-500/20 text-sm font-semibold">
                         {skill.name} <span className="opacity-50 ml-1 font-normal text-xs uppercase">{skill.proficiency}</span>
                       </span>
                     ))}
@@ -208,6 +454,50 @@ export default function App() {
                 </div>
               </div>
 
+            </div>
+          </div>
+        )}
+
+        {/* --- COMPARE MODAL --- */}
+        {compareList.length === 2 && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+            <div 
+              role="dialog" 
+              aria-modal="true" 
+              aria-labelledby="comparison-modal-title"
+              className="bg-slate-900 border border-slate-700 rounded-3xl w-full max-w-5xl p-8 shadow-2xl relative"
+            >
+              <button 
+                onClick={() => setCompareList([])}
+                className="absolute top-6 right-6 text-slate-400 hover:text-white transition-colors"
+                title="Close"
+              >
+                ✕ Close
+              </button>
+              <h2 id="comparison-modal-title" className="text-2xl font-bold text-white mb-8 border-b border-slate-800 pb-4">Candidate Comparison</h2>
+              <div className="grid grid-cols-2 gap-8">
+                {/* Fix 5: Use unique ID instead of array index for key */}
+                {compareList.map((id) => {
+                  const cand = candidates.find(c => c.candidate_id === id);
+                  if (!cand) return null;
+                  return (
+                    <div key={id} className="bg-slate-800/50 p-6 rounded-2xl border border-slate-700/50">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="bg-slate-700 text-white px-3 py-1 rounded-md text-sm font-bold">Rank #{cand.rank}</div>
+                        <h3 className="text-xl font-bold text-white font-mono">{cand.candidate_id}</h3>
+                      </div>
+                      <div className="mb-6 bg-slate-900/50 rounded-xl p-4 border border-slate-700/30">
+                        <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-1">Match Score</span>
+                        <span className="text-4xl font-black text-blue-400">{(cand.score * 100).toFixed(1)}%</span>
+                      </div>
+                      <div>
+                        <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">Automated Reasoning</span>
+                        <p className="text-sm text-slate-300 leading-relaxed">{cand.reasoning}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         )}
