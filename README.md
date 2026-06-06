@@ -62,5 +62,4 @@ We designed a highly optimized, single-pass filtering pipeline:
 
 ## 🚀 Live Demo
 
-- [Launch the Sandbox](PENDING_VERCEL_LINK)
-- _Note: Ensure the backend API is running locally or deployed for full data visualization._
+- [Launch the Sandbox](redrob-discovery-engine.vercel.app)
