@@ -9,7 +9,7 @@ Processing 100,000 candidate profiles under strict 5-minute CPU constraints to f
 
 # 🚀 Kinetiq Engine
 
-![Dashboard Overview](assets/dashboard-main.png)
+![Dashboard Overview](assets/dashboard.png)
 
 ## 🖼️ Visual Showcase
 
@@ -18,13 +18,13 @@ _A glimpse into the Kinetiq "Midnight Glass" interface:_
 <div align="center">
   <table>
     <tr>
-      <td align="center"><img src="assets/dashboard-main.png" width="300"><br>Dashboard View</td>
+      <td align="center"><img src="assets/dashboard.png" width="300"><br>Dashboard View</td>
       <td align="center"><img src="assets/selection.png" width="300"><br>Candidate Filtering</td>
-      <td align="center"><img src="assets/Profile-detail.png" width="300"><br>Deep Analytics</td>
+      <td align="center"><img src="assets/profile-detail.png" width="300"><br>Deep Analytics</td>
     </tr>
     <tr>
-      <td align="center"><img src="assets/Comparison-modal.png" width="300"><br>Peer Comparison</td>
-      <td align="center"><img src="assets/Export-workflow.png" width="300"><br>Exporting Data</td>
+      <td align="center"><img src="assets/comparison-modal.png" width="300"><br>Peer Comparison</td>
+      <td align="center"><img src="assets/export-workflow.png" width="300"><br>Exporting Data</td>
     </tr>
   </table>
 </div>
